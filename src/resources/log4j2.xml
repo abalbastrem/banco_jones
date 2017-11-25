@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ALL">
+<!-- ALL < DEBUG < INFO < WARN < ERROR < FATAL < OFF.  -->
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+		</Console>
+ 
+		<RollingFile name="ficheroLog" filename="log/log.log"
+			filepattern="${logPath}/%d{YYYYMMddHHmmss}-fargo.log">
+			<PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5p %c{1}:%L - %msg%n" />
+    		<!--         	 Podemos crear nuestro propio filtro
+    		
+    		<Filters>
+
+  
+        		<ThresholdFilter level="warn"  onMatch="DENY" onMismatch="NEUTRAL"/>
+        		<ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+        		<ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+
+        		
+        		<ThresholdFilter level="info"  onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>-->
+        		<!-- <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" /> -->
+				<Policies>
+					<SizeBasedTriggeringPolicy size="100 MB" />
+				</Policies>
+				<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+ 
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="ficheroLog" />
+		</Root>
+	</Loggers>
+</Configuration>
+
