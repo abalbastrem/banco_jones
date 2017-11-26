@@ -100,6 +100,8 @@ public class AccountDAO {
 		stmt = con.prepareStatement(prop.getProperty("account.delete"));
 		stmt.setString(1, account.getIban());
 		stmt.setString(2, account.getCliente());
+		
+		System.out.println("iban: "+account.getIban()+" cliente: "+account.getCliente());
 
 		stmt.executeUpdate();
 

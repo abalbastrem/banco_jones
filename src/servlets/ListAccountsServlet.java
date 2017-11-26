@@ -21,82 +21,99 @@ import dao.AccountDAO;
 @WebServlet("/ListAccountsServlet")
 public class ListAccountsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ListAccountsServlet() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public ListAccountsServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		response.sendRedirect("loginok.jsp");
-		
+
 		String sw = (String) request.getAttribute("sw");
 		System.out.println("SW" + sw);
-		
+
 		switch (sw) {
-		
-			/// GETACCOUNTS ///	
-			case "getaccounts":	
-				try {
-					List<Account> accounts = AccountDAO.getAccounts( ((Cliente)request.getSession().getAttribute("clientSession")).getDni() );
-					HttpSession session = request.getSession();
-					session.setAttribute("accounts", accounts);
-					request.getRequestDispatcher("detalleCuenta.jsp").include(request,response);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			break;
-			
-			/// DELETE ACCOUNT ///
-			case "deleteaccount":
-				
-				Account account2 = new Account();
-				account2.setCliente(request.getParameter("dni"));
-				account2.setIban(request.getParameter("iban"));
-				try {
-					AccountDAO.deleteAccount(account2);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+
+		/// GETACCOUNTS ///
+		case "getaccounts":
+			try {
+				List<Account> accounts = AccountDAO
+						.getAccounts(((Cliente) request.getSession().getAttribute("clientSession")).getDni());
+				HttpSession session = request.getSession();
+				session.setAttribute("accounts", accounts);
+				request.getRequestDispatcher("detalleCuenta.jsp").include(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			break;
 		}
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String sw = (String) request.getParameter("sw"); // parameter para String, atribute para Objects
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		/// Changes the SW from parameter to attribute to remain consistent
+		System.out.println(request.getParameter("iban"));
+		System.out.println("::::: SW AS PARAM: " + request.getParameter("sw"));
+		String sw = request.getParameter("sw");
+		((HttpServletRequest) request).setAttribute("sw", sw);
+		/// --
+		System.out.println("::::: SW AS ATTR: " + request.getAttribute("sw"));
+		sw = (String) request.getAttribute("sw"); // parameter para String, atribute para Objects
 		System.out.println("SW: " + sw);
-		
+
 		switch (sw) {
-		
+
 		/// INSERT ACCOUNT ///
-			case "insertaccount":
-				Cliente c = ((Cliente)request.getSession().getAttribute("clientSession"));
-				System.out.println("C "+c);
-				Account account = new Account();
-				account.setIban(request.getParameter("iban"));
-				account.setSaldo(0L);
-				account.setCliente(c.getDni());
-				try {
-					Boolean isAccountInserted = AccountDAO.insertAccount(account);
-					System.out.println(isAccountInserted);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+		case "insertaccount":
+			Cliente c = ((Cliente) request.getSession().getAttribute("clientSession"));
+			System.out.println("C " + c);
+			Account account = new Account();
+			account.setIban(request.getParameter("iban"));
+			account.setSaldo(0L);
+			account.setCliente(c.getDni());
+			try {
+				System.out.println("::::: IS ACCOUNT INSERTED? " + AccountDAO.insertAccount(account));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				HttpSession session = request.getSession();
+				session.setAttribute("sw", "getaccounts");
+				request.getRequestDispatcher("detalleCuenta.jsp").forward(request, response);
+			}
+			break;
+
+		/// DELETE ACCOUNT ///
+		case "deleteaccount":
+			Cliente c2 = ((Cliente) request.getSession().getAttribute("clientSession"));
+			Account account2 = new Account();
+			account2.setCliente(request.getParameter("dni"));
+			account2.setIban(request.getParameter("iban"));
+			account2.setCliente(c2.getDni());
+			try {
+				System.out.println("::::: IS ACCOUNT DELETED? "+AccountDAO.deleteAccount(account2));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				HttpSession session = request.getSession();
+				session.setAttribute("sw", "getaccounts");
+				request.getRequestDispatcher("detalleCuenta.jsp").forward(request, response);
+			}
 			break;
 		}
-		
-		
-		
 	}
 
 }

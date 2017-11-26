@@ -38,10 +38,8 @@ public class RedirectFilter implements Filter {
 		System.out.println(":::::C: "+c);
 		
 		String path = ((HttpServletRequest)request).getRequestURI();
-		if (path.equalsIgnoreCase("/workspace/banco_jones/detalleCuenta.jsp")) {
-			String sw = "getaccounts";
-			((HttpServletRequest)request).setAttribute("sw", sw);
-//			System.out.println("request.getAttribute("set"));
+		if (path.equalsIgnoreCase("/banco_jones/detalleCuenta.jsp")) {
+			((HttpServletRequest)request).setAttribute("sw", "getaccounts");
 			request.getRequestDispatcher("/ListAccountsServlet").include(request, response);
 		}
 		return;
