@@ -26,7 +26,6 @@ public class ListAccountsServlet extends HttpServlet {
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ListAccountsServlet() {
-		super();
 	}
 
 	/**

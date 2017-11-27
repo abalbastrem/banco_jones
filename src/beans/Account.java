@@ -29,6 +29,16 @@ public class Account {
 	public String toString() {
 		return "Account [iban=" + iban + ", saldo=" + saldo + ", cliente=" + cliente + "]";
 	}
+	
+	// Check account has enough moneys
+	public boolean isThereEnoughMoney(long amount) throws Exception {
+		if ( this.saldo < amount ) {
+			throw new Exception("ERROR: La cuenta de origen no tiene suficientes fondos");
+		} else {
+			return true;
+		}
+		
+	}
 
 
 }
