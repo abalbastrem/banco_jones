@@ -3,7 +3,7 @@
 	<%@ include file="snippets/header.jsp"%>
 	<%@ include file="snippets/requestClient.jsp" %>
 	<%@ include file="snippets/requestAccounts.jsp"%>
-	<title>BC Cuentas</title>
+	<title>BC <fmt:message key="accounts"/></title>
 </head>
 <body>	
 	
@@ -14,7 +14,7 @@
 			<li class="list-group-item" style="border-collapse:collapse">
 				<form action="ListAccountsServlet" method="POST" style="border-collapse:collapse">
 					<div class="row">
-						<div id="iban" name="iban" class="col-md-4"><%= account.getIban() %></div>
+						<div id="iban" class="col-md-4"><%= account.getIban() %></div>
 						<div class="col-md-4"><%= account.getSaldo() %> euros</div>
 						<div class="col-md-2"><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button></div>
 						<div class="col-md-2"><a href="listaTransacciones.jsp"><span class="glyphicon glyphicon-eye-open"></span></a></div>
@@ -27,7 +27,7 @@
 		<li class="list-group-item" style="border-collapse:collapse">
 			<form action="ListAccountsServlet" method="POST" style="border-collapse:collapse">
 				<div class="row">
-					<div id="iban" name="iban" class="col-md-3"><input type="text" class="form-control" id="iban" name="iban" placeholder="<fmt:message key="iban24"/>"></div>
+					<div id="iban" class="col-md-3"><input type="text" class="form-control" id="iban" name="iban" placeholder="<fmt:message key="iban24"/>"></div>
 					<div class="col-md-1"></div>
 					<div class="col-md-2">--</div>
 					<div class="col-md-2"><fmt:message key="add.an.account"/></div>

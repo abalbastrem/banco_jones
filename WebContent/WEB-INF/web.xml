@@ -9,17 +9,4 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
-  <!-- manera de versiones anteriores de listar y definir los servlets -->
-<!--   <servlet> -->
-<!--   	<servlet-name>LogServlet</servlet-name> -->
-<!--   	<servlet-class>LogServlet</servlet-class> -->
-<!--   	<async-supported>true</async-supported> -->
-<!--   </servlet> -->
-  
-<!--   <servlet-mapping> -->
-<!--   	<servlet-name>LogServlet</servlet-name> -->
-<!--   	<url-pattern>/LogServlet</url-pattern> -->
-<!--   </servlet-mapping> -->
-<!-- </web-app> -->
 </web-app>
