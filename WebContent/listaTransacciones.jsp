@@ -1,8 +1,8 @@
 <html>
 <head>
-	<%@ include file="snippets/header.jsp"%>
+	<%@ include file="snippets/header.jsp" %>
 	<%@ include file="snippets/requestClient.jsp" %>
-	<%@ include file="snippets/requestTransactions.jsp"%>
+	<%@ include file="snippets/requestTransactions.jsp" %>
 	<title>BC <fmt:message key="Transactions"/></title>
 </head>
 <body>

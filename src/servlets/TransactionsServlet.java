@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.Account;
 import beans.Cliente;
 import beans.Transaction;
-import dao.TransaccionesDAO;
+import dao.AccountDAO;
+import dao.TransactionDAO;
 
 /**
  * Servlet implementation class TransactionsServlet
@@ -30,7 +35,16 @@ public class TransactionsServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		try {
+			System.out.println("::::: get IBAN: "+request.getParameter("iban"));
+			List<Transaction> transactions = TransactionDAO.listaTransacciones( request.getParameter("iban") );
+			System.out.println("::::: TRANSACTIONS get: "+transactions);
+			HttpSession session = request.getSession();
+			session.setAttribute("transactions", transactions);
+			request.getRequestDispatcher("listaTransacciones.jsp").include(request, response);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -43,7 +57,7 @@ public class TransactionsServlet extends HttpServlet {
 		Cliente c = (Cliente) request.getSession().getAttribute("clientSession");
 		
 		try {
-			System.out.println("::::: IS TRANSFER EXECUTED? " + TransaccionesDAO.realizaTransaccion(origin, destination, amount, c));
+			System.out.println("::::: IS TRANSFER EXECUTED? " + TransactionDAO.realizaTransaccion(origin, destination, amount, c));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

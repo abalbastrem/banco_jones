@@ -16,12 +16,12 @@ import beans.Account;
 import beans.Cliente;
 import beans.Transaction;
 
-public class TransaccionesDAO {
+public class TransactionDAO {
 	
 	static Connection con = null;
 	
 	static Properties prop = new Properties();
-	static InputStream input = TransaccionesDAO.class.getClassLoader().getResourceAsStream("sql.properties");
+	static InputStream input = TransactionDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 	
 	public static boolean realizaTransaccion(String origin, String destination, long amount, Cliente c) throws Exception {
 		if (input == null) {
@@ -85,10 +85,12 @@ public class TransaccionesDAO {
 		return true;
 	}
 	
-	public List<Transaction> listaTransacciones(String iban) throws SQLException {
+	public static List<Transaction> listaTransacciones(String iban) throws SQLException {
 		if (input == null) {
 			System.out.println("No se encontró el fichero");
 		}
+		
+		System.out.println("::::: IBAN: "+iban);
 		
 		// INICIALIZA LA LISTA
 		List<Transaction> transactions = new ArrayList<>();
@@ -106,10 +108,11 @@ public class TransaccionesDAO {
 			transaction.setDestination(transactionsByOriginRS.getString("destino"));
 			transactions.add(transaction);
 		}
-		
+
+		System.out.println("::::: TRANSACTIONS: "+transactions);
+
 		return transactions;
-		
-		
+
 	}
 
 }
