@@ -20,7 +20,7 @@ import dao.TransactionDAO;
 /**
  * Servlet implementation class TransactionsServlet
  */
-@WebServlet("/TransactionsServlet")
+@WebServlet(name="/TransactionsServlet", urlPatterns="/TransactionsServlet")
 public class TransactionsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,7 +36,6 @@ public class TransactionsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			System.out.println("::::: get IBAN: "+request.getParameter("iban"));
 			List<Transaction> transactions = TransactionDAO.listaTransacciones( request.getParameter("iban") );
 			System.out.println("::::: TRANSACTIONS get: "+transactions);
 			HttpSession session = request.getSession();

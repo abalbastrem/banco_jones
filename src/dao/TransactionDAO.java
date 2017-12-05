@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.servlet.http.HttpServletRequest;
-
+import bd.ConnectionManager;
 import beans.Account;
 import beans.Cliente;
 import beans.Transaction;
@@ -22,6 +21,7 @@ public class TransactionDAO {
 	
 	static Properties prop = new Properties();
 	static InputStream input = TransactionDAO.class.getClassLoader().getResourceAsStream("sql.properties");
+	
 	
 	public static boolean realizaTransaccion(String origin, String destination, long amount, Cliente c) throws Exception {
 		if (input == null) {
@@ -85,27 +85,40 @@ public class TransactionDAO {
 		return true;
 	}
 	
-	public static List<Transaction> listaTransacciones(String iban) throws SQLException {
+	public static List<Transaction> listaTransacciones(String iban) throws SQLException, IOException {
+		con = ConnectionManager.getConnection();
+		
+		
+		PreparedStatement getTransactionsByIban = null;
 		if (input == null) {
 			System.out.println("No se encontró el fichero");
 		}
 		
-		System.out.println("::::: IBAN: "+iban);
+		prop.load(input);
+		
+		System.out.println("::::: DAO IBAN: "+iban);
 		
 		// INICIALIZA LA LISTA
 		List<Transaction> transactions = new ArrayList<>();
 		
-		PreparedStatement getTransactionsByIban = null;
-		getTransactionsByIban = con.prepareStatement(prop.getProperty("transaction.gettransactionbyorigin"));
+		// QUERY
+		System.out.println(prop.getProperty("transaction.gettransactionsbyiban"));
+		getTransactionsByIban = con.prepareStatement(prop.getProperty("transaction.gettransactionsbyiban"));
 		getTransactionsByIban.setString(1, iban);
-		ResultSet transactionsByOriginRS = getTransactionsByIban.executeQuery();
+		getTransactionsByIban.setString(2, iban);
 		
-		while (transactionsByOriginRS.next()) {
+		System.out.println("::::: STMT: "+getTransactionsByIban);
+		
+		ResultSet transactionsByIbanRS = getTransactionsByIban.executeQuery();
+		
+		System.out.println("::::: RS: "+transactionsByIbanRS);
+		
+		while (transactionsByIbanRS.next()) {
 			Transaction transaction = new Transaction();
-			transaction.setId(transactionsByOriginRS.getLong("id"));
-			transaction.setDate(transactionsByOriginRS.getString("fecha"));
-			transaction.setOrigin(transactionsByOriginRS.getString("origen"));
-			transaction.setDestination(transactionsByOriginRS.getString("destino"));
+			transaction.setId(transactionsByIbanRS.getLong("id"));
+			transaction.setDate(transactionsByIbanRS.getString("fecha"));
+			transaction.setOrigin(transactionsByIbanRS.getString("origen"));
+			transaction.setDestination(transactionsByIbanRS.getString("destino"));
 			transactions.add(transaction);
 		}
 
