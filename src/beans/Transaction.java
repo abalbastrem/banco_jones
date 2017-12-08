@@ -6,7 +6,7 @@ public class Transaction {
 	private String date;
 	private String origin;
 	private String destination;
-	private long amount;
+	private double amount;
 	
 	public long getId() {
 		return id;
@@ -32,10 +32,10 @@ public class Transaction {
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
-	public long getAmount() {
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(long amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	@Override

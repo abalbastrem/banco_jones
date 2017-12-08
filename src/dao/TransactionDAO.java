@@ -23,25 +23,29 @@ public class TransactionDAO {
 	static InputStream input = TransactionDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 	
 	
-	public static boolean realizaTransaccion(String origin, String destination, long amount, Cliente c) throws Exception {
+	public static boolean realizaTransaccion(String origin, String destination, double amount, Cliente c) throws Exception {
+		con = ConnectionManager.getConnection();
+		
 		if (input == null) {
 			System.out.println("No se encontró el fichero");
 		}
-		
+
 		prop.load(input);
 		
-		
+
 		// INICIALITZAR LA TRANSACCIÓ
 		Transaction transaction = new Transaction();
 		transaction.setAmount(amount);
 		transaction.setOrigin(origin);
 		transaction.setDestination(destination);
 		
+		System.out.println("::::: "+transaction);
+
 		// QUERY PER TROBAR EL COMPTE ORIGEN
 		Account cuentaOrigen = new Account();
-		
+
 		PreparedStatement queryCuentaOrigen = null;
-		queryCuentaOrigen = con.prepareStatement(prop.getProperty("cuenta.getaccount"));
+		queryCuentaOrigen = con.prepareStatement(prop.getProperty("account.getaccount"));
 		queryCuentaOrigen.setString(1, transaction.getOrigin());
 		queryCuentaOrigen.setString(2, c.getDni());
 		ResultSet cuentaOrigenRS = queryCuentaOrigen.executeQuery();
@@ -63,7 +67,7 @@ public class TransactionDAO {
 		Account cuentaDest = new Account();
 
 		PreparedStatement queryCuentaDest = null;
-		queryCuentaDest = con.prepareStatement(prop.getProperty("cuenta.getaccount"));
+		queryCuentaDest = con.prepareStatement(prop.getProperty("account.getaccount"));
 		queryCuentaDest.setString(1, transaction.getOrigin());
 		queryCuentaDest.setString(2, c.getDni());
 		ResultSet cuentaDestRS = queryCuentaDest.executeQuery();
@@ -73,14 +77,22 @@ public class TransactionDAO {
 			cuentaDest.setSaldo(cuentaDestRS.getLong("saldo"));
 		}
 		
+		System.out.println("::::: "+cuentaDest);
+		
 		// TRANSFERENCIA
 		PreparedStatement transfer = null;
 		transfer = con.prepareStatement(prop.getProperty("transaction.newtransaction"));
-		transfer.setLong(1, transaction.getAmount());
+		transfer.setDouble(1, transaction.getAmount());
 		transfer.setString(2, transaction.getOrigin());
 		transfer.setString(3, transaction.getDestination());
-		
+
 		transfer.executeUpdate();
+
+		// ACTUALIZA CANTIDAD EN CUENTA ORIGEN Y DESTINO
+		cuentaOrigen.setSaldo(cuentaOrigen.getSaldo()-transaction.getAmount());
+		cuentaDest.setSaldo(cuentaDest.getSaldo()+transaction.getAmount());
+		System.out.println("::::: CUENTAORIGEN: "+cuentaOrigen);
+		System.out.println("::::: CUENTADEST: "+cuentaDest);
 		
 		return true;
 	}
@@ -119,6 +131,7 @@ public class TransactionDAO {
 			transaction.setDate(transactionsByIbanRS.getString("fecha"));
 			transaction.setOrigin(transactionsByIbanRS.getString("origen"));
 			transaction.setDestination(transactionsByIbanRS.getString("destino"));
+			transaction.setAmount(transactionsByIbanRS.getDouble("cantidad"));
 			transactions.add(transaction);
 		}
 

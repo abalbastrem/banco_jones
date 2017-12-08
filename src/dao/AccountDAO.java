@@ -71,7 +71,7 @@ public class AccountDAO {
 		// CONSTRUYE EL QUERY
 		stmt = con.prepareStatement(prop.getProperty("account.insert"));
 		stmt.setString(1, account.getIban());
-		stmt.setLong(2, account.getSaldo());
+		stmt.setDouble(2, account.getSaldo());
 		stmt.setString(3, account.getCliente());
 
 		stmt.executeUpdate();
@@ -98,6 +98,36 @@ public class AccountDAO {
 
 		// CONSTRUYE EL QUERY
 		stmt = con.prepareStatement(prop.getProperty("account.delete"));
+		stmt.setString(1, account.getIban());
+		stmt.setString(2, account.getCliente());
+		
+		System.out.println("iban: "+account.getIban()+" cliente: "+account.getCliente());
+
+		stmt.executeUpdate();
+
+		stmt.close();
+		con.close();
+
+		return true;
+
+	}
+	
+	public static boolean updateAccount(Account account) throws SQLException, IOException {
+
+		con = ConnectionManager.getConnection();
+		PreparedStatement stmt = null;
+
+		Properties prop = new Properties();
+		InputStream input = RegistryDAO.class.getClassLoader().getResourceAsStream("sql.properties");
+
+		if (input == null) {
+			System.out.println("No se encontró el fichero");
+		}
+
+		prop.load(input);
+
+		// CONSTRUYE EL QUERY
+		stmt = con.prepareStatement(prop.getProperty("account.update"));
 		stmt.setString(1, account.getIban());
 		stmt.setString(2, account.getCliente());
 		

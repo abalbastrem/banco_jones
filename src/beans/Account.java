@@ -3,7 +3,7 @@ package beans;
 public class Account {
 
 	private String iban;
-	private long saldo;
+	private double saldo;
 	private String cliente;
 
 
@@ -13,11 +13,11 @@ public class Account {
 	public void setIban(String iban) {
 		this.iban = iban;
 	}
-	public long getSaldo() {
+	public double getSaldo() {
 		return saldo;
 	}
-	public void setSaldo(long saldo) {
-		this.saldo = saldo;
+	public void setSaldo(double d) {
+		this.saldo = d;
 	}
 	public String getCliente() {
 		return cliente;
@@ -31,8 +31,8 @@ public class Account {
 	}
 	
 	// Check account has enough moneys
-	public boolean isThereEnoughMoney(long amount) throws Exception {
-		if ( this.saldo < amount ) {
+	public boolean isThereEnoughMoney(double d) throws Exception {
+		if ( this.saldo < d ) {
 			throw new Exception("ERROR: La cuenta de origen no tiene suficientes fondos");
 		} else {
 			return true;

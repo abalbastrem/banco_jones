@@ -52,7 +52,7 @@ public class TransactionsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String origin = request.getParameter("origin");
 		String destination = request.getParameter("destination");
-		long amount = Long.parseLong( request.getParameter("amount") );
+		double amount = Double.parseDouble( request.getParameter("amount") );
 		Cliente c = (Cliente) request.getSession().getAttribute("clientSession");
 		
 		try {
