@@ -10,7 +10,7 @@
       <li><a href="login.jsp"><fmt:message key="login"/></a></li>
       <li><a href="registry.jsp"><fmt:message key="signup"/></a></li>
       <li><a href="ProfileUpdate.jsp"><fmt:message key="update.profile"/></a></li>
-      <li><a href="detalleCuenta.jsp"><fmt:message key="Accounts"/></a></li> <!-- Envia a un redirectFilter -->
+      <li><a href="ListAccountsServlet?sw=getaccounts"><fmt:message key="Accounts"/></a></li> <!-- Envia a un redirectFilter -->
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><fmt:message key="language"/>
         <span class="caret"></span></a>

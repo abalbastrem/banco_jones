@@ -7,9 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import bd.ConnectionManager;
+import servlets.InitServlet;
 
 public class UpdateDAO {
+	
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 
 	static Connection con = null;
 
@@ -22,7 +28,7 @@ public class UpdateDAO {
 			InputStream input = UpdateDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 
 			if (input == null) {
-				System.out.println("No se encontró el fichero");
+				logger.error("No se encontró el fichero");
 			}
 
 			prop.load(input);
@@ -37,16 +43,16 @@ public class UpdateDAO {
 			stmt.setString(6, phone);
 			stmt.setString(7, dni);
 			
-			System.out.println(stmt.toString());
+			logger.info(stmt.toString());
 			stmt.executeUpdate();
-			System.out.println("=====AFTER EXECUTE UPDATE");
+			logger.info("::::: AFTER EXECUTE UPDATE");
 			/* No usamos rs porque no esperamos resultados de una BBDD
 			/* cuando hacemos un insert. Si hay cualquier error,
 			 * el método .executeUpdate() nos fará un error SQLException
 			 */
 				
 		} catch (SQLException e) { // se usa porque hacemos un stmt (statement)
-			System.out.println("::::: SQLEXCEPTION");
+			logger.fatal("::::: SQLEXCEPTION");
 			e.printStackTrace();
 		} catch (IOException e) { // Se usa porque accedemos a sql.properties
 			e.printStackTrace();

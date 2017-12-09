@@ -1,14 +1,12 @@
 package servlets;
 
-import java.io.File;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Servlet implementation class InitServlet
@@ -16,13 +14,13 @@ import org.apache.logging.log4j.core.LoggerContext;
 @WebServlet(name="InitServlet", urlPatterns="/InitServlet",loadOnStartup=1)
 public class InitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = LogManager.getLogger(InitServlet.class);
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public InitServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public void init(ServletConfig config) throws ServletException {

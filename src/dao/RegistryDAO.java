@@ -7,9 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import bd.ConnectionManager;
+import servlets.InitServlet;
 
 public class RegistryDAO {
+	
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 
 	static Connection con = null;
 

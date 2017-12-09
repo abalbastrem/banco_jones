@@ -15,7 +15,8 @@ import beans.Cliente;
 /**
  * Servlet Filter implementation class RedirectFilter
  */
-@WebFilter(urlPatterns={"/detalleCuenta.jsp"})
+@WebFilter()
+// urlPatterns={"/detalleCuenta.jsp"}
 public class RedirectFilter implements Filter {
 
     /**

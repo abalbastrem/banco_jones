@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.config.builder.api.LoggableComponentBuilder;
+
 import beans.Account;
 import beans.Cliente;
 import beans.Transaction;
@@ -23,6 +27,7 @@ import dao.TransactionDAO;
 @WebServlet(name="/TransactionsServlet", urlPatterns="/TransactionsServlet")
 public class TransactionsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = LogManager.getLogger(InitServlet.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -56,7 +61,7 @@ public class TransactionsServlet extends HttpServlet {
 		Cliente c = (Cliente) request.getSession().getAttribute("clientSession");
 		
 		try {
-			System.out.println("::::: IS TRANSFER EXECUTED? " + TransactionDAO.realizaTransaccion(origin, destination, amount, c));
+			logger.info("::::: IS TRANSFER EXECUTED? " + TransactionDAO.realizaTransaccion(origin, destination, amount, c));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

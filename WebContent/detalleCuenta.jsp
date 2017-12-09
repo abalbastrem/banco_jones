@@ -16,8 +16,8 @@
 					<div class="row">
 						<div id="iban" class="col-md-4"><%= account.getIban() %></div>
 						<div class="col-md-4"><%= account.getSaldo() %> euros</div>
-						<div class="col-md-2"><button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button></div>
-						<div class="col-md-2"><a href="TransactionsServlet?iban=<%= account.getIban() %>"><span class="glyphicon glyphicon-eye-open"></span></a></div>
+						<div class="col-md-2"><a href="ListAccountsServlet?iban=<%= account.getIban() %>&sw=deleteaccount"><button class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></button></div>
+						<div class="col-md-2"><a href="TransactionsServlet?iban=<%= account.getIban() %>&sw=gettransactions"><span class="glyphicon glyphicon-eye-open"></span></a></div>
 						<input style="display:none" id="sw" name="sw" value="deleteaccount"/>
 						<input style="display:none" id="iban" name="iban" value="<%= account.getIban() %>"/>
 					</div>

@@ -10,10 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import bd.ConnectionManager;
 import beans.Account;
+import servlets.InitServlet;
 
 public class AccountDAO {
+	
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 
 	static Connection con = null;
 
@@ -26,7 +32,7 @@ public class AccountDAO {
 		PreparedStatement stmt = null;
 
 		if (input == null) {
-			System.out.println("No se encontró el fichero");
+			logger.error("No se encontró el fichero");
 		}
 
 		prop.load(input);
@@ -36,20 +42,17 @@ public class AccountDAO {
 		stmt.setString(1, dni);
 
 		ResultSet rs = (ResultSet) stmt.executeQuery();
-		System.out.println("::::: RESULTSET: "+rs.toString());
 
 		List<Account> accounts = new ArrayList<>();
 		while (rs.next()) {
-			System.out.println("::::: RS.IBAN: " + rs.getString("iban"));
 			Account account = new Account();
 			account.setCliente(dni);
 			account.setIban(rs.getString("iban"));
 			account.setSaldo(rs.getLong("saldo"));
-			System.out.println("::::: ACCOUNT: "+account);
 			accounts.add(account);
 		}
 
-		 System.out.println("::::: ACCOUNTS: "+accounts);
+		 logger.info("::::: ACCOUNTS: "+accounts);
 
 		stmt.close();
 		con.close();
@@ -63,7 +66,7 @@ public class AccountDAO {
 		PreparedStatement stmt = null;
 
 		if (input == null) {
-			System.out.println("No se encontró el fichero");
+			logger.info("No se encontró el fichero");
 		}
 
 		prop.load(input);
@@ -91,7 +94,7 @@ public class AccountDAO {
 		InputStream input = RegistryDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 
 		if (input == null) {
-			System.out.println("No se encontró el fichero");
+			logger.error("No se encontró el fichero");
 		}
 
 		prop.load(input);
@@ -100,8 +103,6 @@ public class AccountDAO {
 		stmt = con.prepareStatement(prop.getProperty("account.delete"));
 		stmt.setString(1, account.getIban());
 		stmt.setString(2, account.getCliente());
-		
-		System.out.println("iban: "+account.getIban()+" cliente: "+account.getCliente());
 
 		stmt.executeUpdate();
 
@@ -121,17 +122,15 @@ public class AccountDAO {
 		InputStream input = RegistryDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 
 		if (input == null) {
-			System.out.println("No se encontró el fichero");
+			logger.error("No se encontró el fichero");
 		}
 
 		prop.load(input);
 
 		// CONSTRUYE EL QUERY
 		stmt = con.prepareStatement(prop.getProperty("account.update"));
-		stmt.setString(1, account.getIban());
-		stmt.setString(2, account.getCliente());
-		
-		System.out.println("iban: "+account.getIban()+" cliente: "+account.getCliente());
+		stmt.setDouble(1, account.getSaldo());
+		stmt.setString(2, account.getIban());
 
 		stmt.executeUpdate();
 

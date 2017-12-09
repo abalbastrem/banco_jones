@@ -24,7 +24,7 @@
 			<div id="id" class="col-md-16"><h4><fmt:message key="new.transaction"/></h4></div>
 			<form action="TransactionsServlet" method="POST" style="border-collapse:collapse">
 				<div class="row">
-					<div class="col-md-2"><input type="text" class="form-control" id="origin" name="origin" value="<%= request.getParameter("iban") %>"></div>
+					<div class="col-md-2"><input type="text" class="form-control" style="display:none" id="origin" name="origin" value="<%= request.getParameter("iban") %>"></div>
 					<div class="col-md-2"><fmt:message key="amount"/>  <input id="amount" name="amount" value="0.00"/></div>
 					<div class="col-md-1"><fmt:message key="into.account"/></div>
 					<div class="col-md-3"><input type="text" class="form-control col-md-2" id="destination" name="destination"/></div>

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import beans.Cliente;
 
 /**
@@ -17,6 +20,7 @@ import beans.Cliente;
 @WebServlet("/PerfilServlet")
 public class PerfilServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = LogManager.getLogger(InitServlet.class);
        
     /**
      * @see HttpServlet#HttpServlet()

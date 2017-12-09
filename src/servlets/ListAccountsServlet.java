@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import beans.Account;
 import beans.Cliente;
 import dao.AccountDAO;
@@ -21,6 +24,7 @@ import dao.AccountDAO;
 @WebServlet("/ListAccountsServlet")
 public class ListAccountsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -35,9 +39,9 @@ public class ListAccountsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.sendRedirect("loginok.jsp");
-
-		String sw = (String) request.getAttribute("sw");
-		System.out.println("SW" + sw);
+		String sw = request.getParameter("sw");
+//		String sw = (String) request.getAttribute("sw");
+		logger.info("::::: SW: " + sw);
 
 		switch (sw) {
 
@@ -48,7 +52,24 @@ public class ListAccountsServlet extends HttpServlet {
 						.getAccounts(((Cliente) request.getSession().getAttribute("clientSession")).getDni());
 				HttpSession session = request.getSession();
 				session.setAttribute("accounts", accounts);
+				logger.info("::::: SERVLET ACCOUNTS: "+accounts);
+				logger.info("::::: B4 REQUESTDISP ");
 				request.getRequestDispatcher("detalleCuenta.jsp").include(request, response);
+				logger.info("::::: AFTER REQUESTDISP ");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		
+		/// DELETEACCOUNT ///
+		case "deleteaccount":
+			try {
+				Account account = new Account();
+				account.setIban(request.getParameter("iban"));
+				String dni = ((Cliente) request.getSession().getAttribute("clientSession")).getDni();
+				account.setCliente(dni);
+				System.out.println("::::: ACCOUNT TO DELETE: "+account);
+				AccountDAO.deleteAccount(account);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -64,14 +85,11 @@ public class ListAccountsServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		/// Changes the SW from parameter to attribute to remain consistent
-		System.out.println(request.getParameter("iban"));
-		System.out.println("::::: SW AS PARAM: " + request.getParameter("sw"));
 		String sw = request.getParameter("sw");
 		((HttpServletRequest) request).setAttribute("sw", sw);
-		/// --
-		System.out.println("::::: SW AS ATTR: " + request.getAttribute("sw"));
 		sw = (String) request.getAttribute("sw"); // parameter para String, atribute para Objects
-		System.out.println("SW: " + sw);
+		
+		logger.info("::::: SW: " + sw);
 
 		switch (sw) {
 
@@ -84,7 +102,7 @@ public class ListAccountsServlet extends HttpServlet {
 			account.setSaldo(0L);
 			account.setCliente(c.getDni());
 			try {
-				System.out.println("::::: IS ACCOUNT INSERTED? " + AccountDAO.insertAccount(account));
+				logger.info("::::: IS ACCOUNT INSERTED? " + AccountDAO.insertAccount(account));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -102,7 +120,7 @@ public class ListAccountsServlet extends HttpServlet {
 			account2.setIban(request.getParameter("iban"));
 			account2.setCliente(c2.getDni());
 			try {
-				System.out.println("::::: IS ACCOUNT DELETED? "+AccountDAO.deleteAccount(account2));
+				logger.info("::::: IS ACCOUNT DELETED? "+AccountDAO.deleteAccount(account2));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {

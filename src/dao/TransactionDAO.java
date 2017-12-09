@@ -10,12 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import bd.ConnectionManager;
 import beans.Account;
 import beans.Cliente;
 import beans.Transaction;
+import servlets.InitServlet;
 
 public class TransactionDAO {
+	
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 	
 	static Connection con = null;
 	
@@ -27,7 +33,7 @@ public class TransactionDAO {
 		con = ConnectionManager.getConnection();
 		
 		if (input == null) {
-			System.out.println("No se encontró el fichero");
+			logger.error("No se encontró el fichero");
 		}
 
 		prop.load(input);
@@ -39,13 +45,13 @@ public class TransactionDAO {
 		transaction.setOrigin(origin);
 		transaction.setDestination(destination);
 		
-		System.out.println("::::: "+transaction);
+		logger.info("::::: "+transaction);
 
 		// QUERY PER TROBAR EL COMPTE ORIGEN
 		Account cuentaOrigen = new Account();
 
 		PreparedStatement queryCuentaOrigen = null;
-		queryCuentaOrigen = con.prepareStatement(prop.getProperty("account.getaccount"));
+		queryCuentaOrigen = con.prepareStatement(prop.getProperty("account.getoriginaccount"));
 		queryCuentaOrigen.setString(1, transaction.getOrigin());
 		queryCuentaOrigen.setString(2, c.getDni());
 		ResultSet cuentaOrigenRS = queryCuentaOrigen.executeQuery();
@@ -54,8 +60,6 @@ public class TransactionDAO {
 			cuentaOrigen.setIban(cuentaOrigenRS.getString("iban"));
 			cuentaOrigen.setSaldo(cuentaOrigenRS.getLong("saldo"));
 		}
-		
-		System.out.println("::::: CUENTA ORIGEN: "+cuentaOrigen);
 		
 		// COMPROVAR SI EL COMPTE ORIGEN TÉ PROU LÍQUID
 		if (!cuentaOrigen.isThereEnoughMoney(transaction.getAmount())) {
@@ -68,16 +72,13 @@ public class TransactionDAO {
 
 		PreparedStatement queryCuentaDest = null;
 		queryCuentaDest = con.prepareStatement(prop.getProperty("account.getaccount"));
-		queryCuentaDest.setString(1, transaction.getOrigin());
-		queryCuentaDest.setString(2, c.getDni());
+		queryCuentaDest.setString(1, transaction.getDestination());
 		ResultSet cuentaDestRS = queryCuentaDest.executeQuery();
 		if (cuentaDestRS.next()) {
 			cuentaDest.setCliente(cuentaDestRS.getString("cliente"));
 			cuentaDest.setIban(cuentaDestRS.getString("iban"));
 			cuentaDest.setSaldo(cuentaDestRS.getLong("saldo"));
 		}
-		
-		System.out.println("::::: "+cuentaDest);
 		
 		// TRANSFERENCIA
 		PreparedStatement transfer = null;
@@ -91,8 +92,10 @@ public class TransactionDAO {
 		// ACTUALIZA CANTIDAD EN CUENTA ORIGEN Y DESTINO
 		cuentaOrigen.setSaldo(cuentaOrigen.getSaldo()-transaction.getAmount());
 		cuentaDest.setSaldo(cuentaDest.getSaldo()+transaction.getAmount());
-		System.out.println("::::: CUENTAORIGEN: "+cuentaOrigen);
-		System.out.println("::::: CUENTADEST: "+cuentaDest);
+		logger.info("::::: CUENTAORIGEN: "+cuentaOrigen);
+		logger.info("::::: CUENTADEST: "+cuentaDest);
+		logger.info("::::: is origin account updated? "+AccountDAO.updateAccount(cuentaOrigen));
+		logger.info("::::: is destination account updated? "+AccountDAO.updateAccount(cuentaDest));
 		
 		return true;
 	}
@@ -103,27 +106,25 @@ public class TransactionDAO {
 		
 		PreparedStatement getTransactionsByIban = null;
 		if (input == null) {
-			System.out.println("No se encontró el fichero");
+			logger.error("No se encontró el fichero");
 		}
 		
 		prop.load(input);
-		
-		System.out.println("::::: DAO IBAN: "+iban);
 		
 		// INICIALIZA LA LISTA
 		List<Transaction> transactions = new ArrayList<>();
 		
 		// QUERY
-		System.out.println(prop.getProperty("transaction.gettransactionsbyiban"));
+		prop.getProperty("transaction.gettransactionsbyiban");
 		getTransactionsByIban = con.prepareStatement(prop.getProperty("transaction.gettransactionsbyiban"));
 		getTransactionsByIban.setString(1, iban);
 		getTransactionsByIban.setString(2, iban);
 		
-		System.out.println("::::: STMT: "+getTransactionsByIban);
+		logger.info("::::: STMT: "+getTransactionsByIban);
 		
 		ResultSet transactionsByIbanRS = getTransactionsByIban.executeQuery();
 		
-		System.out.println("::::: RS: "+transactionsByIbanRS);
+		logger.info("::::: RS: "+transactionsByIbanRS);
 		
 		while (transactionsByIbanRS.next()) {
 			Transaction transaction = new Transaction();
@@ -135,7 +136,7 @@ public class TransactionDAO {
 			transactions.add(transaction);
 		}
 
-		System.out.println("::::: TRANSACTIONS: "+transactions);
+		logger.info("::::: DAO TRANSACTIONS: "+transactions);
 
 		return transactions;
 
