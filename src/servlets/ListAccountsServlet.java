@@ -54,7 +54,7 @@ public class ListAccountsServlet extends HttpServlet {
 				session.setAttribute("accounts", accounts);
 				logger.info("::::: SERVLET ACCOUNTS: "+accounts);
 				logger.info("::::: B4 REQUESTDISP ");
-				request.getRequestDispatcher("detalleCuenta.jsp").include(request, response);
+				request.getRequestDispatcher("detalleCuenta.jsp").include(request, response); // Esto causa ERROR
 				logger.info("::::: AFTER REQUESTDISP ");
 			} catch (SQLException e) {
 				e.printStackTrace();
