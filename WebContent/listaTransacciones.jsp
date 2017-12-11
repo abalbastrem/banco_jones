@@ -27,11 +27,11 @@
 	
 	<div class="paginationdiv">
 		<ul class="pagination">
-		  <li><a href="listaTransaccioness.jsp?page=1">1</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=2">2</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=3">3</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=4">4</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=5">5</a></li>
+		  <li><a href="listaTransacciones.jsp?page=1">1</a></li>
+		  <li><a href="listaTransacciones.jsp?page=2">2</a></li>
+		  <li><a href="listaTransacciones.jsp?page=3">3</a></li>
+		  <li><a href="listaTransacciones.jsp?page=4">4</a></li>
+		  <li><a href="listaTransacciones.jsp?page=5">5</a></li>
 		</ul>
 	</div>
 	
@@ -66,11 +66,11 @@
 	
 	<div class="paginationdiv">
 		<ul class="pagination">
-		  <li><a href="listaTransaccioness.jsp?page=1">1</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=2">2</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=3">3</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=4">4</a></li>
-		  <li><a href="listaTransaccioness.jsp?page=5">5</a></li>
+		  <li><a href="listaTransacciones.jsp?page=1">1</a></li>
+		  <li><a href="listaTransacciones.jsp?page=2">2</a></li>
+		  <li><a href="listaTransacciones.jsp?page=3">3</a></li>
+		  <li><a href="listaTransacciones.jsp?page=4">4</a></li>
+		  <li><a href="listaTransacciones.jsp?page=5">5</a></li>
 		</ul>
 	</div>
 	
