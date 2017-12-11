@@ -42,9 +42,12 @@ public class TransactionsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			List<Transaction> transactions = TransactionDAO.listaTransacciones( request.getParameter("iban") );
-			System.out.println("::::: TRANSACTIONS get: "+transactions);
+			logger.info("::::: TRANSACTIONS get: "+transactions);
 			HttpSession session = request.getSession();
 			session.setAttribute("transactions", transactions);
+			session.setAttribute("page", request.getParameter("page"));
+			session.setAttribute("perpage", request.getParameter("perpage"));
+			session.setAttribute("iban", request.getParameter("iban"));
 			request.getRequestDispatcher("listaTransacciones.jsp").include(request, response);
 		} catch (SQLException e) {
 			e.printStackTrace();

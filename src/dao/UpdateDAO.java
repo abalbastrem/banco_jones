@@ -19,7 +19,7 @@ public class UpdateDAO {
 
 	static Connection con = null;
 
-	public static void update(String dni, String name, String surnames, String pass, String dob, String sex, String address, String phone) {
+	public static void update(String dni, String name, String surnames, String dob, String sex, String address, String phone) {
 		con = ConnectionManager.getConnection();
 		PreparedStatement stmt = null;
 
@@ -43,9 +43,7 @@ public class UpdateDAO {
 			stmt.setString(6, phone);
 			stmt.setString(7, dni);
 			
-			logger.info(stmt.toString());
 			stmt.executeUpdate();
-			logger.info("::::: AFTER EXECUTE UPDATE");
 			/* No usamos rs porque no esperamos resultados de una BBDD
 			/* cuando hacemos un insert. Si hay cualquier error,
 			 * el método .executeUpdate() nos fará un error SQLException

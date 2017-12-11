@@ -41,6 +41,9 @@
       <label for="phone"><fmt:message key="phone.number"/></label>
       <input type="text" class="form-control" id="phone" name="phone" value="601241674">
     </div>
+    <div class="form-group">
+      <input style="display:none" type="text" class="form-control" id="sw" name="sw" value="registry">
+    </div>
     <button type="submit" class="btn btn-default"><fmt:message key="create.profile"/></button>
   </form>
 </div>

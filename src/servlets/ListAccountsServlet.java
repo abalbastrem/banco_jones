@@ -52,10 +52,8 @@ public class ListAccountsServlet extends HttpServlet {
 						.getAccounts(((Cliente) request.getSession().getAttribute("clientSession")).getDni());
 				HttpSession session = request.getSession();
 				session.setAttribute("accounts", accounts);
-				logger.info("::::: SERVLET ACCOUNTS: "+accounts);
-				logger.info("::::: B4 REQUESTDISP ");
 				request.getRequestDispatcher("detalleCuenta.jsp").include(request, response); // Esto causa ERROR
-				logger.info("::::: AFTER REQUESTDISP ");
+				return;
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -68,8 +66,8 @@ public class ListAccountsServlet extends HttpServlet {
 				account.setIban(request.getParameter("iban"));
 				String dni = ((Cliente) request.getSession().getAttribute("clientSession")).getDni();
 				account.setCliente(dni);
-				System.out.println("::::: ACCOUNT TO DELETE: "+account);
-				AccountDAO.deleteAccount(account);
+				logger.info("is account deleted? "+AccountDAO.deleteAccount(account));
+				request.getRequestDispatcher("detalleCuenta.jsp").include(request, response);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

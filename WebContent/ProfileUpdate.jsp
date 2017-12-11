@@ -3,8 +3,6 @@
 
 <html>
 <head>
-<%-- 	<%@ include file="snippets/header.jsp" %> --%>
-<%-- 	<%@ include file="snippets/requestClient.jsp" %> --%>
 	<title>BC Profile Update</title>
 </head>
 <body>
@@ -18,7 +16,7 @@
 <div class="container">
   <h2><fmt:message key="update.profile"/></h2>
   <h3><%= c.getDni() %></h3>
-  <form action="UpdateServlet" method="POST">
+  <form action="ControllerServlet" method="POST">
     <div class="form-group">
       <label for="name"><fmt:message key="name"/></label>
       <input type="text" class="form-control" id="name" name="name" value="<%= c.getName() %>">
@@ -32,16 +30,19 @@
       <input type="text" class="form-control" id="dob" placeholder="DD/MM/AAAA" name="dob" value="<%= c.getDob() %>">
     </div>
     <div class="form-group">
-      <label for="address"><fmt:message key="address"/></label>
-      <input type="text" class="form-control" id="address" name="address" value="<%= c.getAddress() %>">
-    </div>
-    <div class="form-group">
       <label for="sex"><fmt:message key="sex"/></label>
       <input type="text" class="form-control" id="sex" placeholder="h/m" name="sex" value="<%= c.getSex() %>">
     </div>
     <div class="form-group">
-      <label for="telf"><fmt:message key="phone.number"/></label>
-      <input type="text" class="form-control" id="telf" name="telf" value="<%= c.getPhone() %>">
+      <label for="address"><fmt:message key="address"/></label>
+      <input type="text" class="form-control" id="address" name="address" value="<%= c.getAddress() %>">
+    </div>
+    <div class="form-group">
+      <label for="phone"><fmt:message key="phone.number"/></label>
+      <input type="text" class="form-control" id="phone" name="phone" value="<%= c.getPhone() %>">
+    </div>
+    <div class="form-group" style="display:none">
+      <input type="text" class="form-control" id="sw" name="sw" value="update">
     </div>
     <button type="submit" class="btn btn-default"><fmt:message key="update.profile"/></button>
   </form>

@@ -8,9 +8,38 @@
 <body>
 
 	<h3><fmt:message key="Transactions"/></h3>
-
+	
+	<% String iban = (String) session.getAttribute("iban"); %>
+	<% int pageto;
+	if (request.getParameter("page") == null) {
+		pageto = 1;
+	} else {
+		pageto = Integer.parseInt(request.getParameter("page"));
+	}
+	%>
+	<% int perpage;
+	if (request.getParameter("perpage") == null) {
+		perpage = 5;
+	} else {
+		perpage = Integer.parseInt(request.getParameter("perpage"));
+	}
+	%>
+	
+	<div class="paginationdiv">
+		<ul class="pagination">
+		  <li><a href="listaTransaccioness.jsp?page=1">1</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=2">2</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=3">3</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=4">4</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=5">5</a></li>
+		</ul>
+	</div>
+	
 	<ul class="list-group">
-		<% for (Transaction transaction : transactions) { %>
+		
+		<% List<Transaction> transactions_paginated = transactions.subList((pageto-1)*perpage, ((pageto-1)*perpage)+perpage); %>
+	
+		<% for (Transaction transaction : transactions_paginated) { %>
 			<li class="list-group-item" style="border-collapse:collapse">
 				<div class="row">
 					<div id="id" class="col-md-3"><%= transaction.getId() %></div>
@@ -22,7 +51,7 @@
 		<% } %>
 			<li class="list-group-item" style="border-collapse:collapse">
 			<div id="id" class="col-md-16"><h4><fmt:message key="new.transaction"/></h4></div>
-			<form action="TransactionsServlet" method="POST" style="border-collapse:collapse">
+			<form action="ControllerServlet" method="POST" style="border-collapse:collapse">
 				<div class="row">
 					<div class="col-md-2"><input type="text" class="form-control" style="display:none" id="origin" name="origin" value="<%= request.getParameter("iban") %>"></div>
 					<div class="col-md-2"><fmt:message key="amount"/>  <input id="amount" name="amount" value="0.00"/></div>
@@ -34,6 +63,16 @@
 			</form>
 		</li>
 	</ul>
+	
+	<div class="paginationdiv">
+		<ul class="pagination">
+		  <li><a href="listaTransaccioness.jsp?page=1">1</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=2">2</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=3">3</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=4">4</a></li>
+		  <li><a href="listaTransaccioness.jsp?page=5">5</a></li>
+		</ul>
+	</div>
 	
 	<%@ include file="snippets/footer.html"%>
 	

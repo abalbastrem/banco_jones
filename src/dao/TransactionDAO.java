@@ -92,8 +92,6 @@ public class TransactionDAO {
 		// ACTUALIZA CANTIDAD EN CUENTA ORIGEN Y DESTINO
 		cuentaOrigen.setSaldo(cuentaOrigen.getSaldo()-transaction.getAmount());
 		cuentaDest.setSaldo(cuentaDest.getSaldo()+transaction.getAmount());
-		logger.info("::::: CUENTAORIGEN: "+cuentaOrigen);
-		logger.info("::::: CUENTADEST: "+cuentaDest);
 		logger.info("::::: is origin account updated? "+AccountDAO.updateAccount(cuentaOrigen));
 		logger.info("::::: is destination account updated? "+AccountDAO.updateAccount(cuentaDest));
 		
@@ -120,11 +118,7 @@ public class TransactionDAO {
 		getTransactionsByIban.setString(1, iban);
 		getTransactionsByIban.setString(2, iban);
 		
-		logger.info("::::: STMT: "+getTransactionsByIban);
-		
 		ResultSet transactionsByIbanRS = getTransactionsByIban.executeQuery();
-		
-		logger.info("::::: RS: "+transactionsByIbanRS);
 		
 		while (transactionsByIbanRS.next()) {
 			Transaction transaction = new Transaction();
@@ -135,8 +129,6 @@ public class TransactionDAO {
 			transaction.setAmount(transactionsByIbanRS.getDouble("cantidad"));
 			transactions.add(transaction);
 		}
-
-		logger.info("::::: DAO TRANSACTIONS: "+transactions);
 
 		return transactions;
 

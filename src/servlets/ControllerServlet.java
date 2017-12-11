@@ -29,14 +29,71 @@ public class ControllerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		try {
+			String sw = request.getParameter("sw");
+			logger.info("ACTION: " + sw);
+			switch (sw) {
+
+			case "logout":
+
+			case "getaccounts":
+				request.getRequestDispatcher("/ListAccountsServlet").include(request, response);
+				break;
+
+			case "deleteaccount":
+				request.getRequestDispatcher("/ListAccountsServlet").include(request, response);
+				break;
+
+			case "gettransactions":
+				request.getRequestDispatcher("/TransactionsServlet").include(request, response);
+				break;
+				
+			case "downloadtransactions":
+				request.getRequestDispatcher("/DownloadServlet").include(request, response);
+				break;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		
+		try {
+			String sw = request.getParameter("sw");
+			logger.info("ACTION: " + sw);
+			switch (sw) {
+
+			case "login":
+				request.getRequestDispatcher("/LoginServlet").include(request, response);
+				break;
+
+			case "registry":
+				request.getRequestDispatcher("/RegistryServlet").include(request, response);
+				break;
+
+			case "update":
+				request.getRequestDispatcher("/UpdateServlet").include(request, response);
+				break;
+
+			case "insertaccount":
+				request.getRequestDispatcher("/ListAccountsServlet").include(request, response);
+				break;
+
+			case "newtransaction":
+				request.getRequestDispatcher("/TransactionsServlet").include(request, response);
+				break;
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
