@@ -38,6 +38,7 @@ public class ClienteDAO {
 			prop.load(input);
 			
 			// CONSTRUYE EL QUERY
+			logger.info("building query...");
 			stmt = con.prepareStatement(prop.getProperty("cliente.login"));
 			stmt.setString(1, pass);
 			stmt.setString(2, user);

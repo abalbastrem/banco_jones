@@ -42,6 +42,7 @@ public class UpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		logger.info("creating updated client object...");
 		String dni = ((Cliente) request.getSession().getAttribute("clientSession")).getDni();
 		String name = request.getParameter("name");
 		String surnames = request.getParameter("surnames");

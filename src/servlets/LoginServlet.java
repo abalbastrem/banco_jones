@@ -41,10 +41,13 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		logger.info("creating client token");
 		String dni = request.getParameter("dni");
 		String pass = request.getParameter("pass");
 		Cliente c = ClienteDAO.loginValid(dni, pass);
+		logger.info("client token created");
 		if (c.isValid()) {
+			logger.info("client validated");
 			HttpSession session = request.getSession();
 			session.setMaxInactiveInterval(60);
 			session.setAttribute("clientSession", c);

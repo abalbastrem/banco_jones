@@ -7,6 +7,8 @@
 </head>
 <body>
 
+	
+
 	<h3><fmt:message key="Transactions"/></h3>
 	
 	<% String iban = (String) session.getAttribute("iban"); %>
@@ -26,14 +28,19 @@
 	%>
 	
 	<div class="paginationdiv">
-		<ul class="pagination">
-		  <li><a href="listaTransacciones.jsp?page=1">1</a></li>
-		  <li><a href="listaTransacciones.jsp?page=2">2</a></li>
-		  <li><a href="listaTransacciones.jsp?page=3">3</a></li>
-		  <li><a href="listaTransacciones.jsp?page=4">4</a></li>
-		  <li><a href="listaTransacciones.jsp?page=5">5</a></li>
+		<ul id="paginationdiv1" class="pagination">
 		</ul>
 	</div>
+	
+	<span><fmt:message key="Transactions.per.page"/></span>
+	
+	<select id="perpageselect" onchange='location = this.value'>
+		<option value="ControllerServlet?iban=<%= iban %>&sw=gettransactions&perpage=5">5</option>
+		<option value="ControllerServlet?iban=<%= iban %>&sw=gettransactions&perpage=10">10</option>
+		<option value="ControllerServlet?iban=<%= iban %>&sw=gettransactions&perpage=20">20</option>
+		<option value="ControllerServlet?iban=<%= iban %>&sw=gettransactions&perpage=50">50</option>
+		<option value="ControllerServlet?iban=<%= iban %>&sw=gettransactions&perpage=100">100</option>
+	</select>
 	
 	<ul class="list-group">
 		
@@ -64,15 +71,25 @@
 		</li>
 	</ul>
 	
-	<div class="paginationdiv">
-		<ul class="pagination">
-		  <li><a href="listaTransacciones.jsp?page=1">1</a></li>
-		  <li><a href="listaTransacciones.jsp?page=2">2</a></li>
-		  <li><a href="listaTransacciones.jsp?page=3">3</a></li>
-		  <li><a href="listaTransacciones.jsp?page=4">4</a></li>
-		  <li><a href="listaTransacciones.jsp?page=5">5</a></li>
-		</ul>
-	</div>
+	<script type="text/javascript">
+		tpages = Math.floor( <%= transactions.size() %> / <%= perpage %> );
+		document.getElementById("paginationdiv1").innerHTML = '<ul class="pagination">';
+		for (let i = 1; i <= tpages; i++) {
+			document.getElementById("paginationdiv1").innerHTML += '<li><a href="listaTransacciones.jsp?page='+i+'">'+i+'</a></li>';
+		}
+		document.getElementById("paginationdiv1").innerHTML += '<ul class="pagination">';
+		
+		function changePerPage() {
+			alert("function");
+			x = document.getElementById("perpageselect").value;
+			alert(x);
+			if ( x == 5 ) {
+				
+			};
+			if ( x == 10 ) { <% perpage = 10; %>};
+			document.reload();
+		}
+	</script>
 	
 	<%@ include file="snippets/footer.html"%>
 	

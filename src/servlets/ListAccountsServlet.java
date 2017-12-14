@@ -40,8 +40,6 @@ public class ListAccountsServlet extends HttpServlet {
 
 		response.sendRedirect("loginok.jsp");
 		String sw = request.getParameter("sw");
-//		String sw = (String) request.getAttribute("sw");
-		logger.info("::::: SW: " + sw);
 
 		switch (sw) {
 
@@ -86,19 +84,19 @@ public class ListAccountsServlet extends HttpServlet {
 		String sw = request.getParameter("sw");
 		((HttpServletRequest) request).setAttribute("sw", sw);
 		sw = (String) request.getAttribute("sw"); // parameter para String, atribute para Objects
-		
-		logger.info("::::: SW: " + sw);
 
 		switch (sw) {
 
 		/// INSERT ACCOUNT ///
 		case "insertaccount":
 			Cliente c = ((Cliente) request.getSession().getAttribute("clientSession"));
-			System.out.println("C " + c);
+			logger.info("Cliente: " + c);
+			logger.info("creating account...");
 			Account account = new Account();
 			account.setIban(request.getParameter("iban"));
 			account.setSaldo(0L);
 			account.setCliente(c.getDni());
+			logger.info("account created");
 			try {
 				logger.info("::::: IS ACCOUNT INSERTED? " + AccountDAO.insertAccount(account));
 			} catch (SQLException e) {
@@ -113,10 +111,12 @@ public class ListAccountsServlet extends HttpServlet {
 		/// DELETE ACCOUNT ///
 		case "deleteaccount":
 			Cliente c2 = ((Cliente) request.getSession().getAttribute("clientSession"));
+			logger.info("building dummy to delete...");
 			Account account2 = new Account();
 			account2.setCliente(request.getParameter("dni"));
 			account2.setIban(request.getParameter("iban"));
 			account2.setCliente(c2.getDni());
+			logger.info("dummy account built");
 			try {
 				logger.info("::::: IS ACCOUNT DELETED? "+AccountDAO.deleteAccount(account2));
 			} catch (SQLException e) {

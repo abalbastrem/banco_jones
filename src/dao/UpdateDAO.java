@@ -34,6 +34,7 @@ public class UpdateDAO {
 			prop.load(input);
 
 			// CONSTRUYE EL QUERY
+			logger.info("building query...");
 			stmt = con.prepareStatement(prop.getProperty("cliente.update"));
 			stmt.setString(1, name);
 			stmt.setString(2, surnames);
@@ -48,6 +49,8 @@ public class UpdateDAO {
 			/* cuando hacemos un insert. Si hay cualquier error,
 			 * el método .executeUpdate() nos fará un error SQLException
 			 */
+			
+			logger.info("query submitted to DB");
 				
 		} catch (SQLException e) { // se usa porque hacemos un stmt (statement)
 			logger.fatal("::::: SQLEXCEPTION");

@@ -42,7 +42,8 @@ public class AccountDAO {
 		stmt.setString(1, dni);
 
 		ResultSet rs = (ResultSet) stmt.executeQuery();
-
+		
+		logger.info("building list of accounts...");
 		List<Account> accounts = new ArrayList<>();
 		while (rs.next()) {
 			Account account = new Account();
@@ -72,12 +73,14 @@ public class AccountDAO {
 		prop.load(input);
 
 		// CONSTRUYE EL QUERY
+		logger.info("building query...");
 		stmt = con.prepareStatement(prop.getProperty("account.insert"));
 		stmt.setString(1, account.getIban());
 		stmt.setDouble(2, account.getSaldo());
 		stmt.setString(3, account.getCliente());
 
 		stmt.executeUpdate();
+		logger.info("query submitted to DB");
 
 		stmt.close();
 		con.close();
@@ -100,11 +103,13 @@ public class AccountDAO {
 		prop.load(input);
 
 		// CONSTRUYE EL QUERY
+		logger.info("building query...");
 		stmt = con.prepareStatement(prop.getProperty("account.delete"));
 		stmt.setString(1, account.getIban());
 		stmt.setString(2, account.getCliente());
 
 		stmt.executeUpdate();
+		logger.info("query submitted to DB");
 
 		stmt.close();
 		con.close();
@@ -128,11 +133,13 @@ public class AccountDAO {
 		prop.load(input);
 
 		// CONSTRUYE EL QUERY
+		logger.info("building query...");
 		stmt = con.prepareStatement(prop.getProperty("account.update"));
 		stmt.setDouble(1, account.getSaldo());
 		stmt.setString(2, account.getIban());
 
 		stmt.executeUpdate();
+		logger.info("query submitted to DB");
 
 		stmt.close();
 		con.close();

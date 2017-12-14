@@ -48,6 +48,7 @@ public class TransactionDAO {
 		logger.info("::::: "+transaction);
 
 		// QUERY PER TROBAR EL COMPTE ORIGEN
+		logger.info("building query to find origin account...");
 		Account cuentaOrigen = new Account();
 
 		PreparedStatement queryCuentaOrigen = null;
@@ -62,12 +63,16 @@ public class TransactionDAO {
 		}
 		
 		// COMPROVAR SI EL COMPTE ORIGEN TÉ PROU LÍQUID
+		logger.info("checking whether origin account has enough moneys...");
 		if (!cuentaOrigen.isThereEnoughMoney(transaction.getAmount())) {
 			return false;
+		} else {
+			logger.info("enough moneys confirmed");
 		}
 		
 		
 		// QUERY PER TROBAR EL COMPTE DESTÍ
+		logger.info("building query to find destination account...");
 		Account cuentaDest = new Account();
 
 		PreparedStatement queryCuentaDest = null;
@@ -81,6 +86,7 @@ public class TransactionDAO {
 		}
 		
 		// TRANSFERENCIA
+		logger.info("building transfer query...");
 		PreparedStatement transfer = null;
 		transfer = con.prepareStatement(prop.getProperty("transaction.newtransaction"));
 		transfer.setDouble(1, transaction.getAmount());
@@ -88,8 +94,10 @@ public class TransactionDAO {
 		transfer.setString(3, transaction.getDestination());
 
 		transfer.executeUpdate();
+		logger.info("transfer query submitted to DB...");
 
 		// ACTUALIZA CANTIDAD EN CUENTA ORIGEN Y DESTINO
+		logger.info("updating moneys in both origin and destination accounts...");
 		cuentaOrigen.setSaldo(cuentaOrigen.getSaldo()-transaction.getAmount());
 		cuentaDest.setSaldo(cuentaDest.getSaldo()+transaction.getAmount());
 		logger.info("::::: is origin account updated? "+AccountDAO.updateAccount(cuentaOrigen));
@@ -120,6 +128,7 @@ public class TransactionDAO {
 		
 		ResultSet transactionsByIbanRS = getTransactionsByIban.executeQuery();
 		
+		logger.info("building transaction list...");
 		while (transactionsByIbanRS.next()) {
 			Transaction transaction = new Transaction();
 			transaction.setId(transactionsByIbanRS.getLong("id"));
@@ -129,6 +138,7 @@ public class TransactionDAO {
 			transaction.setAmount(transactionsByIbanRS.getDouble("cantidad"));
 			transactions.add(transaction);
 		}
+		logger.info("transaction list done");
 
 		return transactions;
 
