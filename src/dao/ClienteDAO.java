@@ -8,10 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import bd.ConnectionManager;
 import beans.Cliente;
+import servlets.InitServlet;
 
 public class ClienteDAO {
+	
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 	
 	static Connection con = null;
 	
@@ -26,12 +32,13 @@ public class ClienteDAO {
 			InputStream input = ClienteDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 			
 			if ( input == null ) {
-				System.out.println("No se encontró el fichero");
+				logger.error("No se encontró el fichero");
 			}
 			
 			prop.load(input);
 			
 			// CONSTRUYE EL QUERY
+			logger.info("building query...");
 			stmt = con.prepareStatement(prop.getProperty("cliente.login"));
 			stmt.setString(1, pass);
 			stmt.setString(2, user);

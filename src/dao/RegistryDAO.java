@@ -7,9 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import bd.ConnectionManager;
+import servlets.InitServlet;
 
 public class RegistryDAO {
+	
+	static Logger logger = LogManager.getLogger(InitServlet.class);
 
 	static Connection con = null;
 
@@ -22,12 +28,13 @@ public class RegistryDAO {
 			InputStream input = RegistryDAO.class.getClassLoader().getResourceAsStream("sql.properties");
 
 			if (input == null) {
-				System.out.println("No se encontró el fichero");
+				logger.error("No se encontró el fichero");
 			}
 
 			prop.load(input);
 
 			// CONSTRUYE EL QUERY
+			logger.info("building query...");
 			stmt = con.prepareStatement(prop.getProperty("cliente.insert"));
 			stmt.setString(1, dni);
 			stmt.setString(2, name);
@@ -43,6 +50,8 @@ public class RegistryDAO {
 			/* cuando hacemos un insert. Si hay cualquier error,
 			 * el método .executeUpdate() nos fará un error SQLException
 			 */
+			
+			logger.info("query submitted to DB");
 		
 		} catch (SQLException e) { // se usa porque hacemos un stmt (statement)
 			e.printStackTrace();

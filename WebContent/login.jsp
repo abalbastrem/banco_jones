@@ -14,12 +14,13 @@
 
     <div class="container">
 
-      <form action="LoginServlet" method="POST" class="form-signin">
+      <form action="ControllerServlet" method="POST" class="form-signin">
         <h2 class="form-signin-heading"><fmt:message key="please.log.in"/></h2>
         <label for="dni" class="sr-only"><fmt:message key="personal.id"/></label>
         <input name="dni" type="text" id="dni" class="form-control" value="46994355L" required autofocus>
         <label for="inputPassword" class="sr-only"><fmt:message key="password"/></label>
         <input name="pass" type="password" id="inputPassword" class="form-control" value="jupiter" required>
+        <input style="display:none" name="sw" type="text" id="sw" class="form-control" value="login" required>
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> <fmt:message key="remember.me"/>

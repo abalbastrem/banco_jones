@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Logger;
+
+import beans.Cliente;
+
+import org.apache.logging.log4j.LogManager;
+
 import dao.UpdateDAO;
 
 /**
@@ -16,6 +22,7 @@ import dao.UpdateDAO;
 @WebServlet("/UpdateServlet")
 public class UpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = LogManager.getLogger(InitServlet.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,15 +42,15 @@ public class UpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String dni = request.getParameter("dni");
+		logger.info("creating updated client object...");
+		String dni = ((Cliente) request.getSession().getAttribute("clientSession")).getDni();
 		String name = request.getParameter("name");
 		String surnames = request.getParameter("surnames");
-		String pass = request.getParameter("pass");
 		String dob = request.getParameter("dob");
 		String sex = request.getParameter("sex");
 		String address = request.getParameter("address");
 		String phone = request.getParameter("phone");
-		UpdateDAO.update(dni, name, surnames, pass, dob, sex, address, phone);
+		UpdateDAO.update(dni, name, surnames, dob, sex, address, phone);
 		
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(60);
